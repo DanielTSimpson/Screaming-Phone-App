@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ScreamingPhone</string>
+    <string name="textview">TextView</string>
+    <string name="simulateButton">Button</string>
+    <string name="textBox3">TextView</string>
+    <string name="todo">TODO</string>
+    <string name="hello_congrats_on_downloading_the_worst_app_in_history">Hello! Congrats on downloading the worst app in history!</string>
+    <string name="peak_acceleration_none">Peak Acceleration: None</string>
+    <string name="acceleration">Acceleration:</string>
+    <string name="switchbutton">Button</string>
+    <string name="threshold_acceleration">Threshold Acceleration:</string>
+    <string name="you_are_going_to_regret_downloading_this">You are going to regret downloading this</string>
+    <string name="screaming_phone_app">Screaming Phone App</string>
+</resources>
