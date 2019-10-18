@@ -35,19 +35,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textBox1"
         app:layout_constraintVertical_bias="0.204" />
 
-    <Button
-        android:id="@+id/SimulateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/simulateButton"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textBox2"
-        app:layout_constraintVertical_bias="0.07" />
-
     <TextView
         android:id="@+id/textBox3"
         android:layout_width="300dp"
@@ -62,19 +49,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textBox1"
         app:layout_constraintVertical_bias="0.54" />
-
-    <Button
-        android:id="@+id/SwitchButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/switchbutton"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SimulateButton"
-        app:layout_constraintVertical_bias="0.078" />
 
     <TextView
         android:id="@+id/title"

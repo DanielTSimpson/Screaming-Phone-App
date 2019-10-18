@@ -24,14 +24,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Sensor accelerometer;
     float acceleration = 0;
     int sensorType = Sensor.TYPE_LINEAR_ACCELERATION;
-    int speed = SensorManager.SENSOR_DELAY_NORMAL;
+    int speed = SensorManager.SENSOR_DELAY_FASTEST;
     float threshold = (float) 11;
-    int ignoreFactor;
-    int ignoreCounter;
     ArrayList<Float> accelerationList;
+    int arrayCapacity = 10;
+    int ignoreCounter = 0;
 
     //Below are variables associated with text boxes
-    TextView textBox1;
     TextView textBox2;
     TextView textBox3;
 
@@ -41,27 +40,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int[] indexList = new int[numberOfFiles];
     int index;
 
-
-    //Below are variables associated with buttons
-    Button simulateButton;
-    Button switchButton;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         //Defining text boxes
-        textBox1 = findViewById(R.id.textBox1);
         textBox2 = findViewById(R.id.textBox2);
         textBox3 = findViewById(R.id.textBox3);
-        //textBox4 = findViewById(R.id.textBox4);
 
         //Defining accelerometer sensors
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensorManager.registerListener(MainActivity.this,accelerometer, speed);
         accelerometer = sensorManager.getDefaultSensor(sensorType);
+        accelerationList = new ArrayList();
 
         //Defining media player
         mediaPlayer = MediaPlayer.create(this, R.raw.scream1);
@@ -71,28 +63,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             indexList[i] = i;
         }
         index = 0;
-
-        switchButton = findViewById(R.id.SwitchButton);
-        switchButton.setText("Next Sound");//set the text on button
-        switchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nextMedia();
-            }
-        });
-
-        simulateButton = findViewById(R.id.SimulateButton);
-        simulateButton.setText("Simulate Fall");//set the text on button
-        simulateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                accelerationList.set(0, threshold);
-            }
-        });
-
-        ignoreFactor = 100;
-        ignoreCounter = 0;
-        accelerationList = new ArrayList();
     }
     public void nextMedia(){
         index++;
@@ -126,30 +96,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor mySensor = sensorEvent.sensor;
-        if (mySensor.getType() == sensorType) {
+        if (mySensor.getType() == sensorType && accelerationList.size() < arrayCapacity) {
+            accelerationList.add((float) Math.sqrt(Math.pow(sensorEvent.values[0], 2) + Math.pow(sensorEvent.values[1], 2) + Math.pow(sensorEvent.values[2], 2)));
+            acceleration = accelerationList.get(0);
             textBox2.setText("Acceleration: " + acceleration);
 
-            if (accelerationList.size() >= ignoreFactor) {
-                accelerationList.remove(0);
-            }
-            accelerationList.add(acceleration);
-            Log.i("TAG", ""+accelerationList.toString());
 
-            if (accelerationList.get(0) >= threshold) {
-                textBox3.setText("Peak Acceleration:"+acceleration);
+            if (acceleration >= threshold && ignoreCounter == 0) {
+
+                textBox3.setText("Peak Acceleration:" + acceleration);
+                Log.d("Drop", "I FELL!!!");
+                ignoreCounter = 1000;
                 mediaPlayer.start();
-                Log.i("TAG", "OH GOD THE PAIN " + acceleration);
                 nextMedia();
-                //ignoreCounter = 0;
+
             }
-            if (ignoreCounter < ignoreFactor){
-                ignoreCounter++;
+            if (ignoreCounter > 0){
+                ignoreCounter -= 1;
             }
+            Log.d("Drop", "Acceleration: " + acceleration + " Ignore Factor: " + ignoreCounter);
         }
-        float x = sensorEvent.values[0];
-        float y = sensorEvent.values[1];
-        float z = sensorEvent.values[2];
-        acceleration = (float) Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+        else {
+            accelerationList.remove(0);
+        }
+
     }
 
     @Override
