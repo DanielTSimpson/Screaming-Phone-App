@@ -11,4 +11,7 @@
     <string name="threshold_acceleration">Threshold Acceleration:</string>
     <string name="you_are_going_to_regret_downloading_this">You are going to regret downloading this</string>
     <string name="screaming_phone_app">Screaming Phone App</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="stop_the_screams">Stop the screams?</string>
 </resources>

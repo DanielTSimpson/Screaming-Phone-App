@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     //Below are variables associated with text boxes
     TextView textBox2;
     TextView textBox3;
+    Switch screaming;
+    boolean yesNo = true;
 
     //Below are variables associated with playing music and random integers
     MediaPlayer mediaPlayer;
@@ -48,6 +52,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //Defining text boxes
         textBox2 = findViewById(R.id.textBox2);
         textBox3 = findViewById(R.id.textBox3);
+
+        screaming = findViewById(R.id.switch1);
+        screaming.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    yesNo = false;
+                }
+                else{
+                    yesNo = true;
+                    ignoreCounter = 0;
+                }
+            }
+        });
 
         //Defining accelerometer sensors
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -96,7 +114,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor mySensor = sensorEvent.sensor;
-        if (mySensor.getType() == sensorType && accelerationList.size() < arrayCapacity) {
+        if (mySensor.getType() == sensorType && accelerationList.size() < arrayCapacity && yesNo) {
+
             accelerationList.add((float) Math.sqrt(Math.pow(sensorEvent.values[0], 2) + Math.pow(sensorEvent.values[1], 2) + Math.pow(sensorEvent.values[2], 2)));
             acceleration = accelerationList.get(0);
             textBox2.setText("Acceleration: " + acceleration);
@@ -116,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
             Log.d("Drop", "Acceleration: " + acceleration + " Ignore Factor: " + ignoreCounter);
         }
-        else {
+        else if (yesNo) {
             accelerationList.remove(0);
         }
 
